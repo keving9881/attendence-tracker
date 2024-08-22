@@ -5,58 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Softball Attendance Tracker</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 500px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        input[type="text"], select {
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
+        /* Keep your existing styles here */
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Softball Attendance Tracker</h1>
         <form id="attendanceForm">
-            <input type="text" id="name" placeholder="Your Name" required>
+            <!-- Game Date Selection -->
+            <select id="gameDate" required>
+                <option value="" disabled selected>Select Game Date</option>
+                <option value="8/22/24">Week 1 - 8/22/24 - vs Poop Troop</option>
+                <option value="8/29/24">Week 2 - 8/29/24 - vs Little Dingers</option>
+                <option value="9/5/24">Week 3 - 9/5/24 - vs ND</option>
+                <option value="9/12/24">Week 4 - 9/12/24 - vs Poop Troop</option>
+                <option value="9/26/24">Week 6 - 9/26/24 - vs Farside</option>
+                <option value="10/3/24">Week 7 - 10/3/24 - vs LongBallz</option>
+                <option value="10/10/24">Week 8 - 10/10/24 - vs Good News Bears</option>
+                <option value="10/17/24">Week 9 - 10/17/24 - vs Little Dingers</option>
+                <option value="10/24/24">Playoff Game 1 - 10/24/24 - Time TBD</option>
+                <option value="10/31/24">Championship Game - 10/31/24 - Time TBD</option>
+            </select>
+
+            <!-- Player Name Selection -->
+            <select id="playerName" required>
+                <option value="" disabled selected>Select Your Name</option>
+                <option value="Lance Karutz">Lance Karutz</option>
+                <option value="Michael Schwan">Michael Schwan</option>
+                <option value="Brian Anger">Brian Anger</option>
+                <option value="Carmell Dennis">Carmell Dennis</option>
+                <option value="Ed Duer">Ed Duer</option>
+                <option value="Jason Nakatsuka">Jason Nakatsuka</option>
+                <option value="Kevin Garcia">Kevin Garcia</option>
+                <option value="Lars Kugelman">Lars Kugelman</option>
+                <option value="Michael Sassone">Michael Sassone</option>
+                <option value="Michael Shreffler">Michael Shreffler</option>
+                <option value="Morgan Dragan">Morgan Dragan</option>
+                <option value="Peter Huettl">Peter Huettl</option>
+                <option value="Sam Markoe">Sam Markoe</option>
+                <option value="Zach Boyer">Zach Boyer</option>
+            </select>
+
+            <!-- Position Preference -->
+            <select id="positionPreference" required>
+                <option value="" disabled selected>Select Position Preference</option>
+                <option value="Pitcher">Pitcher</option>
+                <option value="Catcher">Catcher</option>
+                <option value="First Base">First Base</option>
+                <option value="Second Base">Second Base</option>
+                <option value="Third Base">Third Base</option>
+                <option value="Shortstop">Shortstop</option>
+                <option value="Left Field">Left Field</option>
+                <option value="Center Field">Center Field</option>
+                <option value="Right Field">Right Field</option>
+                <option value="No Preference">No Preference</option>
+            </select>
+
+            <!-- Attendance Status -->
             <select id="attendance" required>
                 <option value="" disabled selected>Select Your Status</option>
                 <option value="In">In</option>
                 <option value="Out">Out</option>
             </select>
+            
             <button type="submit">Submit</button>
         </form>
         <h2>Who's In?</h2>
@@ -70,15 +81,17 @@
         form.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            const name = document.getElementById('name').value;
+            const gameDate = document.getElementById('gameDate').value;
+            const playerName = document.getElementById('playerName').value;
+            const positionPreference = document.getElementById('positionPreference').value;
             const attendance = document.getElementById('attendance').value;
 
-            if (name && attendance) {
+            if (gameDate && playerName && attendance) {
                 const listItem = document.createElement('li');
-                listItem.textContent = `${name} is ${attendance}`;
+                listItem.textContent = `${playerName} is ${attendance} for ${gameDate} (${positionPreference})`;
                 attendanceList.appendChild(listItem);
 
-                // Reset the form so it is reusable between weeks
+                // Reset the form
                 form.reset();
             }
         });
