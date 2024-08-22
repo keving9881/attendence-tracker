@@ -5,7 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Softball Attendance Tracker</title>
     <style>
-        /* Keep your existing styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        select, button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+            max-width: 180px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .game-block {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .game-header {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .rsvp-status {
+            text-align: left;
+            margin-top: 10px;
+        }
+        .rsvp-status ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .rsvp-status ul li {
+            margin-bottom: 5px;
+        }
+        .rsvp-count {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #d9534f;
+        }
     </style>
 </head>
 <body>
@@ -30,6 +98,7 @@
             <!-- Player Name Selection -->
             <select id="playerName" required>
                 <option value="" disabled selected>Select Your Name</option>
+                <!-- Populate with team member names -->
                 <option value="Lance Karutz">Lance Karutz</option>
                 <option value="Michael Schwan">Michael Schwan</option>
                 <option value="Brian Anger">Brian Anger</option>
@@ -70,13 +139,17 @@
             
             <button type="submit">Submit</button>
         </form>
-        <h2>Who's In?</h2>
-        <ul id="attendanceList"></ul>
+
+        <!-- RSVPs for each game will go here -->
+        <div id="gameStatus"></div>
     </div>
 
     <script>
         const form = document.getElementById('attendanceForm');
-        const attendanceList = document.getElementById('attendanceList');
+        const gameStatus = document.getElementById('gameStatus');
+
+        // Create an object to store RSVPs by game date
+        const rsvpData = {};
 
         form.addEventListener('submit', function(event) {
             event.preventDefault();
@@ -87,14 +160,47 @@
             const attendance = document.getElementById('attendance').value;
 
             if (gameDate && playerName && attendance) {
-                const listItem = document.createElement('li');
-                listItem.textContent = `${playerName} is ${attendance} for ${gameDate} (${positionPreference})`;
-                attendanceList.appendChild(listItem);
+                // Initialize the game date entry if it doesn't exist
+                if (!rsvpData[gameDate]) {
+                    rsvpData[gameDate] = [];
+                }
+
+                // Add the RSVP entry
+                rsvpData[gameDate].push({
+                    name: playerName,
+                    status: attendance,
+                    position: positionPreference
+                });
 
                 // Reset the form
                 form.reset();
+
+                // Update the display
+                updateGameStatus();
             }
         });
+
+        function updateGameStatus() {
+            gameStatus.innerHTML = '';
+
+            for (const [date, rsvps] of Object.entries(rsvpData)) {
+                const inCount = rsvps.filter(rsvp => rsvp.status === 'In').length;
+                const gameBlock = document.createElement('div');
+                gameBlock.classList.add('game-block');
+
+                gameBlock.innerHTML = `
+                    <div class="game-header">${date}</div>
+                    <div class="rsvp-status">
+                        <ul>
+                            ${rsvps.map(rsvp => `<li>${rsvp.name} is ${rsvp.status} (${rsvp.position})</li>`).join('')}
+                        </ul>
+                        <div class="rsvp-count">${inCount}/10 players confirmed. ${10 - inCount} more needed.</div>
+                    </div>
+                `;
+
+                gameStatus.appendChild(gameBlock);
+            }
+        }
     </script>
 </body>
 </html>
