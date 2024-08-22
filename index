@@ -78,7 +78,7 @@
                 listItem.textContent = `${name} is ${attendance}`;
                 attendanceList.appendChild(listItem);
 
-                // Reset the form
+                // Reset the form for additional teammates to complete
                 form.reset();
             }
         });
