@@ -3,26 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Softball Attendance Tracker</title>
+    <title>RechargeMyRizz Roll Call</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Verdana', sans-serif;
+            background-image: url('https://example.com/grass-texture.jpg'); /* Replace with a real URL or local path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             text-align: center;
             margin: 0;
             padding: 0;
+            color: #333;
         }
+
         .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.95);
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            max-width: 900px;
+            margin: 50px auto;
         }
-        h1 {
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin-bottom: 20px;
         }
+
+        .logo {
+            width: 150px; /* Adjust size as needed */
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-family: 'Bangers', cursive; /* Sporty font */
+            color: #FF4500; /* Bright orange, softball-inspired */
+            margin: 0;
+        }
+
         form {
             display: flex;
             justify-content: space-between;
@@ -30,6 +51,7 @@
             gap: 10px;
             margin-bottom: 20px;
         }
+
         select, button {
             padding: 10px;
             border: 1px solid #ddd;
@@ -38,59 +60,85 @@
             width: 100%;
             max-width: 180px;
         }
+
         button {
             background-color: #007BFF;
             color: white;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         .game-block {
-            display: none;
             margin-top: 20px;
             padding: 10px;
             background-color: #f9f9f9;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
-        .game-block.active {
-            display: block;
-        }
+
         .game-header {
             font-weight: bold;
             font-size: 18px;
+            color: #333;
         }
+
         .rsvp-status {
             text-align: left;
             margin-top: 10px;
         }
+
         .rsvp-status ul {
             list-style-type: none;
             padding-left: 0;
         }
+
         .rsvp-status ul li {
             margin-bottom: 5px;
         }
+
         .rsvp-count {
             margin-top: 10px;
             font-weight: bold;
-            color: #d9534f;
+            color: #FF4500; /* Match the title color */
         }
+
         .nav-buttons {
             margin-top: 20px;
             display: flex;
             justify-content: space-between;
         }
+
         .nav-buttons button {
             width: 100px;
+            background-color: #28a745; /* Green buttons for a sporty look */
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .nav-buttons button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .nav-buttons button:hover:enabled {
+            background-color: #218838;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Softball Attendance Tracker</h1>
+        <header>
+            <img src="logo.png" alt="RechargeMyRizz Logo" class="logo"> <!-- Ensure 'logo.png' path is correct -->
+            <h1>RechargeMyRizz Roll Call</h1>
+        </header>
         <form id="attendanceForm">
             <!-- Player Name Selection -->
             <select id="playerName" required>
@@ -196,6 +244,12 @@
 
                 // Update the display
                 updateGameStatus();
+
+                // Check for alerts (e.g., if less than 10 players confirmed)
+                const inCount = Object.values(rsvpData[gameDate]).filter(rsvp => rsvp.status === 'In').length;
+                if (inCount < 10) {
+                    alert(`${10 - inCount} more players needed for ${gameDate}!`);
+                }
             }
         });
 
@@ -207,7 +261,7 @@
             const inCount = Object.values(rsvps).filter(rsvp => rsvp.status === 'In').length;
 
             const gameBlock = document.createElement('div');
-            gameBlock.classList.add('game-block', 'active');
+            gameBlock.classList.add('game-block');
 
             gameBlock.innerHTML = `
                 <div class="game-header">${gameDate}</div>
