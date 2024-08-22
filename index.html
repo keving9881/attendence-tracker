@@ -43,6 +43,93 @@
             color: #FF4500; /* Bright orange, softball-inspired */
             margin: 0;
         }
+
+        form {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        select, button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+            max-width: 180px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .game-block {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-header {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .rsvp-status {
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .rsvp-status ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .rsvp-status ul li {
+            margin-bottom: 5px;
+        }
+
+        .rsvp-count {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #FF4500; /* Match the title color */
+        }
+
+        .nav-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .nav-buttons button {
+            width: 100px;
+            background-color: #28a745; /* Green buttons for a sporty look */
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .nav-buttons button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .nav-buttons button:hover:enabled {
+            background-color: #218838;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
 </head>
@@ -52,7 +139,167 @@
             <img src="RechargeMyRizzLogoPng.png" alt="RechargeMyRizz Logo" class="logo"> <!-- Logo only -->
             <h1>Roll Call</h1> <!-- Simple "Roll Call" text -->
         </header>
-        <!-- The rest of your HTML code -->
+        <form id="attendanceForm">
+            <!-- Player Name Selection -->
+            <select id="playerName" required>
+                <option value="" disabled selected>Select Your Name</option>
+                <option value="Lance Karutz">Lance Karutz</option>
+                <option value="Michael Schwan">Michael Schwan</option>
+                <option value="Brian Anger">Brian Anger</option>
+                <option value="Carmell Dennis">Carmell Dennis</option>
+                <option value="Ed Duer">Ed Duer</option>
+                <option value="Jason Nakatsuka">Jason Nakatsuka</option>
+                <option value="Kevin Garcia">Kevin Garcia</option>
+                <option value="Lars Kugelman">Lars Kugelman</option>
+                <option value="Michael Sassone">Michael Sassone</option>
+                <option value="Michael Shreffler">Michael Shreffler</option>
+                <option value="Morgan Dragan">Morgan Dragan</option>
+                <option value="Peter Huettl">Peter Huettl</option>
+                <option value="Sam Markoe">Sam Markoe</option>
+                <option value="Zach Boyer">Zach Boyer</option>
+            </select>
+
+            <!-- Position Preference -->
+            <select id="positionPreference" required>
+                <option value="" disabled selected>Select Position Preference</option>
+                <option value="Pitcher">Pitcher</option>
+                <option value="Catcher">Catcher</option>
+                <option value="First Base">First Base</option>
+                <option value="Second Base">Second Base</option>
+                <option value="Third Base">Third Base</option>
+                <option value="Shortstop">Shortstop</option>
+                <option value="Left Field">Left Field</option>
+                <option value="Center Field">Center Field</option>
+                <option value="Right Field">Right Field</option>
+                <option value="No Preference">No Preference</option>
+            </select>
+
+            <!-- Attendance Status -->
+            <select id="attendance" required>
+                <option value="" disabled selected>Select Your Status</option>
+                <option value="In">In</option>
+                <option value="Out">Out</option>
+            </select>
+            
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- RSVPs for each game will go here -->
+        <div id="gameStatus"></div>
+        
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <button id="prevGame" disabled>&larr; Previous</button>
+            <button id="nextGame">Next &rarr;</button>
+        </div>
     </div>
+
+    <script>
+        const form = document.getElementById('attendanceForm');
+        const gameStatus = document.getElementById('gameStatus');
+        const prevGameButton = document.getElementById('prevGame');
+        const nextGameButton = document.getElementById('nextGame');
+
+        // Game Dates (in sequence)
+        const gameDates = [
+            "8/22/24 - vs Poop Troop",
+            "8/29/24 - vs Little Dingers",
+            "9/5/24 - vs ND",
+            "9/12/24 - vs Poop Troop",
+            "9/26/24 - vs Farside",
+            "10/3/24 - vs LongBallz",
+            "10/10/24 - vs Good News Bears",
+            "10/17/24 - vs Little Dingers",
+            "10/24/24 - Playoff Game 1 - Time TBD",
+            "10/31/24 - Championship Game - Time TBD"
+        ];
+
+        let currentGameIndex = 0;
+
+        // Create an object to store RSVPs by game date
+        const rsvpData = {};
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const playerName = document.getElementById('playerName').value;
+            const positionPreference = document.getElementById('positionPreference').value;
+            const attendance = document.getElementById('attendance').value;
+            const gameDate = gameDates[currentGameIndex];
+
+            if (gameDate && playerName && attendance) {
+                // Initialize the game date entry if it doesn't exist
+                if (!rsvpData[gameDate]) {
+                    rsvpData[gameDate] = {};
+                }
+
+                // Update or add the player's RSVP
+                rsvpData[gameDate][playerName] = {
+                    status: attendance,
+                    position: positionPreference
+                };
+
+                // Reset the form
+                form.reset();
+
+                // Update the display
+                updateGameStatus();
+
+                // Check for alerts (e.g., if less than 10 players confirmed)
+                const inCount = Object.values(rsvpData[gameDate]).filter(rsvp => rsvp.status === 'In').length;
+                if (inCount < 10) {
+                    alert(`${10 - inCount} more players needed for ${gameDate}!`);
+                }
+            }
+        });
+
+        function updateGameStatus() {
+            gameStatus.innerHTML = '';
+
+            const gameDate = gameDates[currentGameIndex];
+            const rsvps = rsvpData[gameDate] || {};
+            const inCount = Object.values(rsvps).filter(rsvp => rsvp.status === 'In').length;
+
+            const gameBlock = document.createElement('div');
+            gameBlock.classList.add('game-block');
+
+            gameBlock.innerHTML = `
+                <div class="game-header">${gameDate}</div>
+                <div class="rsvp-status">
+                    <ul>
+                        ${Object.entries(rsvps).map(([name, rsvp]) => `<li>${name} is ${rsvp.status} (${rsvp.position})</li>`).join('')}
+                    </ul>
+                    <div class="rsvp-count">${inCount}/10 players confirmed. ${10 - inCount} more needed.</div>
+                </div>
+            `;
+
+            gameStatus.appendChild(gameBlock);
+        }
+
+        function showCurrentGame() {
+            updateGameStatus();
+
+            // Handle button states
+            prevGameButton.disabled = currentGameIndex === 0;
+            nextGameButton.disabled = currentGameIndex === gameDates.length - 1;
+        }
+
+        prevGameButton.addEventListener('click', () => {
+            if (currentGameIndex > 0) {
+                currentGameIndex--;
+                showCurrentGame();
+            }
+        });
+
+        nextGameButton.addEventListener('click', () => {
+            if (currentGameIndex < gameDates.length - 1) {
+                currentGameIndex++;
+                showCurrentGame();
+            }
+        });
+
+        // Initial display
+        showCurrentGame();
+    </script>
 </body>
 </html>
