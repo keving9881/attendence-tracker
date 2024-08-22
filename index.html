@@ -132,15 +132,14 @@
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
-    <!-- Add Firebase SDKs -->
+<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
-<!-- Initialize Firebase -->
 <script>
-  // Your web app's Firebase configuration
+  // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyBfo9IQq6N9rztUxWlrcqMMYEO5ctGLNnQ",
     authDomain: "rechargemyrizz.firebaseapp.com",
@@ -156,6 +155,8 @@
   const db = firebase.firestore();
   const functions = firebase.functions();
   const auth = firebase.auth();
+
+  console.log("Firebase has been initialized successfully.");
 </script>
 </head>
 <body>
