@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softball Attendance Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"], select {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Softball Attendance Tracker</h1>
+        <form id="attendanceForm">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <select id="attendance" required>
+                <option value="" disabled selected>Select Your Status</option>
+                <option value="In">In</option>
+                <option value="Out">Out</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+        <h2>Who's In?</h2>
+        <ul id="attendanceList"></ul>
+    </div>
+
+    <script>
+        const form = document.getElementById('attendanceForm');
+        const attendanceList = document.getElementById('attendanceList');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const attendance = document.getElementById('attendance').value;
+
+            if (name && attendance) {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${name} is ${attendance}`;
+                attendanceList.appendChild(listItem);
+
+                // Reset the form
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>
