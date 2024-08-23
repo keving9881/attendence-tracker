@@ -131,41 +131,45 @@
             background-color: #218838;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
-<!-- Firebase App (the core Firebase SDK) -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
 
-<!-- Add Firebase products that you want to use -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
-<script>
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyBfo9IQq6N9rztUxWlrcqMMYEO5ctGLNnQ",
-    authDomain: "rechargemyrizz.firebaseapp.com",
-    projectId: "rechargemyrizz",
-    storageBucket: "rechargemyrizz.appspot.com",
-    messagingSenderId: "538551382580",
-    appId: "1:538551382580:web:ee7d501e7426c12bbfd061",
-    measurementId: "G-JD4066PT95"
-  };
+    <!-- Firebase Functions -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions.js"></script>
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
-  // Initialize Firestore
-  const db = firebase.firestore();
+    <script>
+      // Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBfo9IQq6N9rztUxWlrcqMMYEO5ctGLNnQ",
+        authDomain: "rechargemyrizz.firebaseapp.com",
+        projectId: "rechargemyrizz",
+        storageBucket: "rechargemyrizz.appspot.com",
+        messagingSenderId: "538551382580",
+        appId: "1:538551382580:web:ee7d501e7426c12bbfd061",
+        measurementId: "G-JD4066PT95"
+      };
 
-  // Initialize Firebase Functions
-  const functions = firebase.functions();
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
 
-  // Initialize Firebase Authentication
-  const auth = firebase.auth();
+      // Initialize Firestore
+      const db = firebase.firestore();
 
-  console.log("Firebase successfully initialized.");
-</script>
+      // Initialize Firebase Functions
+      const functions = firebase.functions();
+
+      // Initialize Firebase Authentication
+      const auth = firebase.auth();
+
+      console.log("Firebase initialized successfully.");
+    </script>
 </head>
 <body>
     <div class="container">
